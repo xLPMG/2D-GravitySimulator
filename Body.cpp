@@ -5,7 +5,7 @@
 #include "Body.h"
 #include "Physics.h"
 
-		Body::Body(float mass, float density, sf::Vector2f pos, sf::Vector2f velocity, bool stationary) {
+		Body::Body(float mass, float density, sf::Vector2f pos, sf::Vector2f velocity, bool stationary, sf::Color color) {
 			this->mass = mass;
 			this->density = density;
 			//let the body be a sphere:
@@ -20,6 +20,7 @@
 			this->stationary = stationary;
 			this->acceleration = sf::Vector2f(0.0f, 0.0f);
 
+			body.setFillColor(color);
 			vertices.setPrimitiveType(sf::PrimitiveType::Points);
 		}
 

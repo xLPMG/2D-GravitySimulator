@@ -95,12 +95,19 @@ int main()
 	FPS.setCharacterSize(24);
 	FPS.setFillColor(sf::Color::White);
 	FPS.setStyle(sf::Text::Bold);
-
-	Body b1(10.0f, 1.f, sf::Vector2f(600.f, 10.f), sf::Vector2f(1.f, 1.f), false);
-	Body b2(150.0f, 0.5f, sf::Vector2f(750.f, 750.f), sf::Vector2f(0.f, 0.f), false);
-	Body b3(5.0f, 1.0f, sf::Vector2f(850.f, 750.f), sf::Vector2f(0.f, -3.), false);
+/*
+	Body b1(10.0f, 1.f, sf::Vector2f(600.f, 10.f), sf::Vector2f(1.f, 1.f), false, sf::Color::Red);
+	Body b2(150.0f, 0.5f, sf::Vector2f(750.f, 750.f), sf::Vector2f(0.f, 0.f), false, sf::Color::Blue);
+	Body b3(5.0f, 1.0f, sf::Vector2f(850.f, 750.f), sf::Vector2f(0.f, -3.), false, sf::Color::Green);
 
 	Body bodies[3] = {b1,b2,b3};
+	*/
+	Body b1(100.0f, 1.f, sf::Vector2f(500.f, 750.f), sf::Vector2f(0.f, 0.9f), false, sf::Color::Red);
+	Body b2(100.0f, 1.f, sf::Vector2f(900.f, 750.f), sf::Vector2f(0.0f, -0.9f), false, sf::Color::White);
+
+	Body bodies[2] = {b1,b2};
+
+
 	int totalBodies = sizeof(bodies) / sizeof(bodies[0]);
 
 	while (window.isOpen())

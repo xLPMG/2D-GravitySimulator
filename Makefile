@@ -4,7 +4,7 @@ CFLAGS = -pedantic -Wall -g -Wextra -Werror
 CPP_VERSION = -std=c++11
 SFML_FLAGS = -framework sfml-graphics -framework sfml-window -framework sfml-system
 
-ra: all run	
+ra: all run
 
 all:
 	g++ -c ${CPP_VERSION} ${CFLAGS} Main.cpp -o ${BUILD_DIR}/main.o

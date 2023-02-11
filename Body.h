@@ -17,7 +17,7 @@ public:
   sf::Vector2f velocity;
   sf::Vector2f acceleration;
 
-		Body(float mass, float density, sf::Vector2f pos, sf::Vector2f velocity, bool stationary);
+		Body(float mass, float density, sf::Vector2f pos, sf::Vector2f velocity, bool stationary, sf::Color color);
 
 		float getMass();
 

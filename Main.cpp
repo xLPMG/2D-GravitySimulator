@@ -17,6 +17,9 @@ bool borderEnabled = true;
 bool showTrails = true;
 bool askForInput = false;
 
+//how far out the "border" extends beyond the visible screen:
+int borderOffset = 1000;
+
 void computeGravitationalForce(Body bodies[], int totalBodies){
 	//compute for each body i the sum of all forces from each object j on object i
 	for (int i = 0; i < totalBodies; i++) {
@@ -68,10 +71,10 @@ void handleCollisions(Body bodies[], int totalBodies, bool borderEnabled){
 			bodies[i].velocity = newVelocity[i];
 		}
 		if (borderEnabled) {
-			if (bodies[i].getPos().x - bodies[i].getRadius() < 0) bodies[i].velocity.x = abs(bodies[i].velocity.x);
-			else if (bodies[i].getPos().x + bodies[i].getRadius() > windowWidth) bodies[i].velocity.x = -abs(bodies[i].velocity.x);
-			if (bodies[i].getPos().y - bodies[i].getRadius() < 0)	bodies[i].velocity.y = abs(bodies[i].velocity.y);
-			else if (bodies[i].getPos().y + bodies[i].getRadius() > windowHeight) bodies[i].velocity.y = -abs(bodies[i].velocity.y);
+			if (bodies[i].getPos().x - bodies[i].getRadius() < 0-borderOffset) bodies[i].velocity.x = abs(bodies[i].velocity.x);
+			else if (bodies[i].getPos().x + bodies[i].getRadius() > windowWidth+borderOffset) bodies[i].velocity.x = -abs(bodies[i].velocity.x);
+			if (bodies[i].getPos().y - bodies[i].getRadius() < 0-borderOffset)	bodies[i].velocity.y = abs(bodies[i].velocity.y);
+			else if (bodies[i].getPos().y + bodies[i].getRadius() > windowHeight+borderOffset) bodies[i].velocity.y = -abs(bodies[i].velocity.y);
 		}
 	}
 	delete[] newVelocity;
@@ -131,12 +134,12 @@ if(askForInput){
 	sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "C++ Gravity Simulator");
 	window.setFramerateLimit(144);
 
-	Body s1(20.0f, 1.0f, sf::Vector2f(100.f, 100.f), sf::Vector2f(0.f, 0.f), false);
+	Body b1(20.0f, 1.0f, sf::Vector2f(100.f, 100.f), sf::Vector2f(0.f, 0.f), false);
 
-	Body s2(50.0f, 1.0f, sf::Vector2f(700.f, 750.f), sf::Vector2f(-0.1f, 0.1f), false);
-	Body s3(50.0f, 1.0f, sf::Vector2f(800.f, 750.f), sf::Vector2f(0.1f, -0.1f), false);
+	Body b2(50.0f, 1.0f, sf::Vector2f(700.f, 750.f), sf::Vector2f(-0.1f, 0.1f), false);
+	Body b3(50.0f, 1.0f, sf::Vector2f(800.f, 750.f), sf::Vector2f(0.1f, -0.1f), false);
 
-	Body bodies[3] = {s1,s2,s3};
+	Body bodies[3] = {b1,b2,b3};
 	int totalBodies = sizeof(bodies) / sizeof(bodies[0]);
 
 	while (window.isOpen())

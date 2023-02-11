@@ -1,6 +1,6 @@
 # 2D-GravitySimulator
 
-2D n-body problem simulator using C++ and SFML
+2D [n-body problem](https://en.wikipedia.org/wiki/N-body_problem) simulator using C++ and SFML
 
 ## Deployment
 - install SFML ([MacOS (using Brew)](https://formulae.brew.sh/formula/sfml), [Linux](https://www.sfml-dev.org/tutorials/2.5/start-linux.php))

@@ -63,20 +63,21 @@
 			if(!stationary){
 			pos.x += velocity.x;
 			pos.y += velocity.y;
-			body.setPosition(pos.x - radius, pos.y - radius);
 			velocity.x += acceleration.x;
 			velocity.y += acceleration.y;
 
-			if(vertices.getVertexCount()==30){
-				vertices[vertexCount].position = sf::Vector2f(pos.x, pos.y);
-				vertexCount++;
-				if(vertexCount>=30){
-					vertexCount=0;
+			body.setPosition(pos.x - radius, pos.y - radius);
+
+				if(vertices.getVertexCount()==30){
+					vertices[vertexCount].position = sf::Vector2f(pos.x, pos.y);
+					vertexCount++;
+						if(vertexCount>=30){
+							vertexCount=0;
+						}
+				}else{
+					vertices.append(sf::Vertex(sf::Vector2f(pos.x, pos.y)));
 				}
-			}else{
-			vertices.append(sf::Vertex(sf::Vector2f(pos.x, pos.y)));
 			}
-		}
 		}
 
     sf::Vector2f Body::normalize(sf::Vector2f v) {

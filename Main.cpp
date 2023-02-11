@@ -15,10 +15,9 @@ bool gravityEnabled = true;
 bool collisionEnabled = true;
 bool borderEnabled = true;
 bool showTrails = true;
-bool askForInput = false;
-
 //how far out the "border" extends beyond the visible screen:
-int borderOffset = 1000;
+int borderOffset = 0;
+bool askForInput = false;
 
 void computeGravitationalForce(Body bodies[], int totalBodies){
 	//compute for each body i the sum of all forces from each object j on object i
@@ -39,7 +38,6 @@ void computeGravitationalForce(Body bodies[], int totalBodies){
 			force.y +=  ( G * bodies[i].getMass() * bodies[j].getMass() / pow(distance, 3) ) * (bodies[j].getPos().y - bodies[i].getPos().y);
 			}
 		}
-
 		// F = m * a <=> a = F / m
 		bodies[i].acceleration = force / bodies[i].getMass();
 	}
@@ -59,7 +57,7 @@ void handleCollisions(Body bodies[], int totalBodies, bool borderEnabled){
 			if (i != j){
 			//square the distance so we dont have to compute the sqrt
 			float distanceSquared = pow((bodies[i].getPos().x - bodies[j].getPos().x), 2) + pow((bodies[i].getPos().y - bodies[j].getPos().y), 2);
-			if (distanceSquared <= pow(bodies[i].getRadius() + bodies[j].getRadius(), 2)) {
+			if (distanceSquared <= (bodies[i].getRadius() + bodies[j].getRadius()) * (bodies[i].getRadius() + bodies[j].getRadius())) {
 				colission[i] = true;
 				newVelocity[i] += bodies[i].collision(bodies[j]);
 			}
@@ -91,13 +89,17 @@ void updateBodies(Body bodies[], int totalBodies){
 	}
 }
 
-int main()
-{
-  cout << "C++ Gravity Simulator" << endl;
+void inputHook(){
+	cout << "C++ Gravity Simulator" << endl;
 
   string response;
 
-if(askForInput){
+	if(askForInput){
+		cout << "Choose a window width (int): ";
+		cin >> windowWidth;
+		cout << "Choose a window height (int): ";
+		cin >> windowHeight;
+
     cout << "Enable gravity? (y/n): ";
     cin >> response;
     if(response=="y"){
@@ -118,6 +120,9 @@ if(askForInput){
     cin >> response;
     if(response=="y"){
       borderEnabled=true;
+
+			cout << "Choose a border offset (int; 0 to have no offset): ";
+			cin >> borderOffset;
     }else{
       borderEnabled=false;
     }
@@ -129,10 +134,28 @@ if(askForInput){
     }else{
       showTrails=false;
     }
+
+	}
 }
+
+int main()
+{
+	inputHook();
 
 	sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "C++ Gravity Simulator");
 	window.setFramerateLimit(144);
+	float fps;
+	sf::Clock clock;
+	sf::Time previousTime = clock.getElapsedTime();
+	sf::Time currentTime;
+
+	sf::Text FPS;
+	sf::Font font;
+  font.loadFromFile("Roboto-Regular.ttf");
+	FPS.setFont(font);
+	FPS.setCharacterSize(24);
+	FPS.setFillColor(sf::Color::White);
+	FPS.setStyle(sf::Text::Bold);
 
 	Body b1(20.0f, 1.0f, sf::Vector2f(100.f, 100.f), sf::Vector2f(0.f, 0.f), false);
 
@@ -154,8 +177,8 @@ if(askForInput){
 
 		updateBodies(bodies, totalBodies);
 
-		//render
 		window.clear();
+
 		for (int i = 0; i < totalBodies; i++) {
 			bodies[i].move();
 			window.draw(bodies[i].getBody());
@@ -163,6 +186,12 @@ if(askForInput){
 			window.draw(bodies[i].getTrail());
 			}
 		}
+		currentTime = clock.getElapsedTime();
+		fps = 1.0f / (currentTime.asSeconds() - previousTime.asSeconds());
+		previousTime = currentTime;
+		FPS.setString("FPS: "+to_string(static_cast<int>(fps)));
+		window.draw(FPS);
+
 		window.display();
 	}
 

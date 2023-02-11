@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include "Body.h"
+#include "Physics.h"
 
 		Body::Body(float mass, float density, sf::Vector2f pos, sf::Vector2f velocity, bool stationary) {
 			this->mass = mass;
@@ -46,19 +47,6 @@
 			return this->vertices;
 		}
 
-		sf::Vector2f Body::collision(Body body2) {
-			//find the norm of the vector from the point of collision of this body and the point of collision of body2
-			sf::Vector2f vN = (normalize(sf::Vector2f(body2.pos.x - pos.x, body2.pos.y - pos.y)));
-			//calculate the p-value that takes into account the velocities of both bodies
-			float p = 2 * (velocity.x * vN.x + velocity.y * vN.y - body2.velocity.x * vN.x - body2.velocity.y * vN.y) /
-        (mass + body2.getMass());
-
-				sf::Vector2f newVelocity;
-				newVelocity.x = velocity.x - p * mass * vN.x;
-				newVelocity.y = velocity.y - p * mass * vN.y;
-				return newVelocity;
-		}
-
 		void Body::move() {
 			if(!stationary){
 			pos.x += velocity.x;
@@ -68,10 +56,10 @@
 
 			body.setPosition(pos.x - radius, pos.y - radius);
 
-				if(vertices.getVertexCount()==30){
+				if(vertices.getVertexCount()==50){
 					vertices[vertexCount].position = sf::Vector2f(pos.x, pos.y);
 					vertexCount++;
-						if(vertexCount>=30){
+						if(vertexCount>=50){
 							vertexCount=0;
 						}
 				}else{
@@ -79,11 +67,3 @@
 				}
 			}
 		}
-
-    sf::Vector2f Body::normalize(sf::Vector2f v) {
-      sf::Vector2f result;
-      float length = sqrt(v.x * v.x + v.y * v.y);
-      result.x = v.x / length;
-      result.y = v.y / length;
-      return result;
-    }

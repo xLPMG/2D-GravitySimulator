@@ -3,10 +3,9 @@
 #include <string>
 #include <iostream>
 #include "Body.h"
+#include "Physics.h"
 
 using namespace std;
-
-const float G = 6.6743f; //6.6743 × 10^-11 m^3 kg^-1 s^-2
 
 int windowWidth = 1500;
 int windowHeight = 1500;
@@ -16,68 +15,8 @@ bool collisionEnabled = true;
 bool borderEnabled = true;
 bool showTrails = true;
 //how far out the "border" extends beyond the visible screen:
-int borderOffset = 0;
+int borderOffset = 500;
 bool askForInput = false;
-
-void computeGravitationalForce(Body bodies[], int totalBodies){
-	//compute for each body i the sum of all forces from each object j on object i
-	for (int i = 0; i < totalBodies; i++) {
-		sf::Vector2f force = sf::Vector2f(0.0f, 0.0f);
-		for (int j = 0; j < totalBodies; j++) {
-			if (i != j) {
-			//distance: sqrt( (j.x – i.x)^2 + (j.y – i.y)^2 )
-			float distance = sqrt(pow((bodies[i].getPos().x - bodies[j].getPos().x), 2) + pow((bodies[i].getPos().y - bodies[j].getPos().y), 2));
-
-			/*
-			- gravitational force: ( ( G * m1 * m2 ) / r^3 ) * r->
-			- r-> is the vector pointing from i to j:  (j.x – i.x, j.y – i.y)
-			-	note: F1-> from i to j equals -F2-> from j to i
-			-	thus instead of calculating F2(j on i) and then -F2, we can just calculate F1 directly
-			*/
-			force.x += ( G * bodies[i].getMass() * bodies[j].getMass() / pow(distance, 3) ) * (bodies[j].getPos().x - bodies[i].getPos().x);
-			force.y +=  ( G * bodies[i].getMass() * bodies[j].getMass() / pow(distance, 3) ) * (bodies[j].getPos().y - bodies[i].getPos().y);
-			}
-		}
-		// F = m * a <=> a = F / m
-		bodies[i].acceleration = force / bodies[i].getMass();
-	}
-}
-
-void handleCollisions(Body bodies[], int totalBodies, bool borderEnabled){
-	sf::Vector2f* newVelocity = new sf::Vector2f[totalBodies];
-	bool* colission = new bool[totalBodies];
-
-	for (int i = 0; i < totalBodies; i++) {
-		newVelocity[i] = sf::Vector2f(0, 0);
-		colission[i] = false;
-	}
-
-	for (int i = 0; i < totalBodies; i++) {
-		for (int j = 0; j < totalBodies; j++) {
-			if (i != j){
-			//square the distance so we dont have to compute the sqrt
-			float distanceSquared = pow((bodies[i].getPos().x - bodies[j].getPos().x), 2) + pow((bodies[i].getPos().y - bodies[j].getPos().y), 2);
-			if (distanceSquared <= (bodies[i].getRadius() + bodies[j].getRadius()) * (bodies[i].getRadius() + bodies[j].getRadius())) {
-				colission[i] = true;
-				newVelocity[i] += bodies[i].collision(bodies[j]);
-			}
-		}
-		}
-	}
-	for (int i = 0; i < totalBodies; i++) {
-		if (colission[i]) {
-			bodies[i].velocity = newVelocity[i];
-		}
-		if (borderEnabled) {
-			if (bodies[i].getPos().x - bodies[i].getRadius() < 0-borderOffset) bodies[i].velocity.x = abs(bodies[i].velocity.x);
-			else if (bodies[i].getPos().x + bodies[i].getRadius() > windowWidth+borderOffset) bodies[i].velocity.x = -abs(bodies[i].velocity.x);
-			if (bodies[i].getPos().y - bodies[i].getRadius() < 0-borderOffset)	bodies[i].velocity.y = abs(bodies[i].velocity.y);
-			else if (bodies[i].getPos().y + bodies[i].getRadius() > windowHeight+borderOffset) bodies[i].velocity.y = -abs(bodies[i].velocity.y);
-		}
-	}
-	delete[] newVelocity;
-	delete[] colission;
-}
 
 void updateBodies(Body bodies[], int totalBodies){
 	if (gravityEnabled) {
@@ -85,7 +24,7 @@ void updateBodies(Body bodies[], int totalBodies){
 	}
 
 	if (collisionEnabled) {
-		handleCollisions(bodies, totalBodies, borderEnabled);
+		handleCollisions(bodies, totalBodies, borderEnabled, borderOffset, windowWidth, windowHeight);
 	}
 }
 
@@ -157,10 +96,9 @@ int main()
 	FPS.setFillColor(sf::Color::White);
 	FPS.setStyle(sf::Text::Bold);
 
-	Body b1(20.0f, 1.0f, sf::Vector2f(100.f, 100.f), sf::Vector2f(0.f, 0.f), false);
-
-	Body b2(50.0f, 1.0f, sf::Vector2f(700.f, 750.f), sf::Vector2f(-0.1f, 0.1f), false);
-	Body b3(50.0f, 1.0f, sf::Vector2f(800.f, 750.f), sf::Vector2f(0.1f, -0.1f), false);
+	Body b1(10.0f, 1.f, sf::Vector2f(600.f, 10.f), sf::Vector2f(1.f, 1.f), false);
+	Body b2(150.0f, 0.5f, sf::Vector2f(750.f, 750.f), sf::Vector2f(0.f, 0.f), false);
+	Body b3(5.0f, 1.0f, sf::Vector2f(850.f, 750.f), sf::Vector2f(0.f, -3.), false);
 
 	Body bodies[3] = {b1,b2,b3};
 	int totalBodies = sizeof(bodies) / sizeof(bodies[0]);

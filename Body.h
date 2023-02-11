@@ -11,7 +11,6 @@ private:
   int vertexCount=0;
   sf::CircleShape body;
   sf::Vector2f pos;
-  sf::Vector2f normalize(sf::Vector2f v);
   sf::VertexArray vertices;
 
 public:
@@ -31,8 +30,6 @@ public:
 		sf::CircleShape getBody();
 
     sf::VertexArray getTrail();
-
-		sf::Vector2f collision(Body body2);
 
 		void move();
 };

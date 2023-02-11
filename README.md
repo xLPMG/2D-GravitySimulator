@@ -5,9 +5,12 @@
 ## Deployment
 - install SFML ([MacOS (using Brew)](https://formulae.brew.sh/formula/sfml), [Linux](https://www.sfml-dev.org/tutorials/2.5/start-linux.php))
 
-in root dir:
-- make
-- make run
+in root dir, execute commands:
+- make        (to compile)
+- make run    (to run)
+
+or in one command:
+- make ra (to compile and run)
 
 Makefile has been tested on MacOS & Debian Linux
 

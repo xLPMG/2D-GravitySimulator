@@ -32,7 +32,7 @@ public:
 
     sf::VertexArray getTrail();
 
-		sf::Vector2f collision(Body targetStar);
+		sf::Vector2f collision(Body body2);
 
 		void move();
 };

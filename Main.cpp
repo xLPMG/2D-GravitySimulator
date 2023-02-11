@@ -14,7 +14,7 @@ int windowHeight = 1500;
 bool gravityEnabled = true;
 bool collisionEnabled = true;
 bool borderEnabled = true;
-bool showTrails = false;
+bool showTrails = true;
 bool askForInput = false;
 
 void computeGravitationalForce(Body bodies[], int totalBodies){
@@ -44,28 +44,27 @@ void computeGravitationalForce(Body bodies[], int totalBodies){
 
 void handleCollisions(Body bodies[], int totalBodies, bool borderEnabled){
 	sf::Vector2f* newVelocity = new sf::Vector2f[totalBodies];
-	bool* coli = new bool[totalBodies];
+	bool* colission = new bool[totalBodies];
 
 	for (int i = 0; i < totalBodies; i++) {
 		newVelocity[i] = sf::Vector2f(0, 0);
-		coli[i] = false;
+		colission[i] = false;
 	}
 
 	for (int i = 0; i < totalBodies; i++) {
 		for (int j = 0; j < totalBodies; j++) {
-			if (i == j) continue;
+			if (i != j){
 			//square the distance so we dont have to compute the sqrt
-			float distanceSquared;
-			distanceSquared = pow((bodies[i].getPos().x - bodies[j].getPos().x), 2) + pow((bodies[i].getPos().y - bodies[j].getPos().y), 2);
+			float distanceSquared = pow((bodies[i].getPos().x - bodies[j].getPos().x), 2) + pow((bodies[i].getPos().y - bodies[j].getPos().y), 2);
 			if (distanceSquared <= pow(bodies[i].getRadius() + bodies[j].getRadius(), 2)) {
-				coli[i] = true;
+				colission[i] = true;
 				newVelocity[i] += bodies[i].collision(bodies[j]);
 			}
-
+		}
 		}
 	}
 	for (int i = 0; i < totalBodies; i++) {
-		if (coli[i]) {
+		if (colission[i]) {
 			bodies[i].velocity = newVelocity[i];
 		}
 		if (borderEnabled) {
@@ -76,7 +75,7 @@ void handleCollisions(Body bodies[], int totalBodies, bool borderEnabled){
 		}
 	}
 	delete[] newVelocity;
-	delete[] coli;
+	delete[] colission;
 }
 
 void updateBodies(Body bodies[], int totalBodies){
@@ -134,8 +133,8 @@ if(askForInput){
 
 	Body s1(20.0f, 1.0f, sf::Vector2f(100.f, 100.f), sf::Vector2f(0.f, 0.f), false);
 
-	Body s2(50.0f, 2.0f, sf::Vector2f(750.f, 750.f), sf::Vector2f(0.f, 0.f), true);
-	Body s3(50.0f, 1.0f, sf::Vector2f(800.f, 750.f), sf::Vector2f(0.f, 0.f), false);
+	Body s2(50.0f, 1.0f, sf::Vector2f(700.f, 750.f), sf::Vector2f(-0.1f, 0.1f), false);
+	Body s3(50.0f, 1.0f, sf::Vector2f(800.f, 750.f), sf::Vector2f(0.1f, -0.1f), false);
 
 	Body bodies[3] = {s1,s2,s3};
 	int totalBodies = sizeof(bodies) / sizeof(bodies[0]);

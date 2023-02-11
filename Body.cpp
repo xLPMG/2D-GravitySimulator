@@ -47,20 +47,16 @@
 		}
 
 		sf::Vector2f Body::collision(Body body2) {
+			//find the norm of the vector from the point of collision of this body and the point of collision of body2
 			sf::Vector2f vN = (normalize(sf::Vector2f(body2.pos.x - pos.x, body2.pos.y - pos.y)));
-			sf::Vector2f hN(-vN.y, vN.x);
+			//calculate the p-value that takes into account the velocities of both bodies
+			float p = 2 * (velocity.x * vN.x + velocity.y * vN.y - body2.velocity.x * vN.x - body2.velocity.y * vN.y) /
+        (mass + body2.getMass());
 
-			float s1v = velocity.x * vN.x + velocity.y * vN.y;
-			float s1h = velocity.x * hN.x + velocity.y * hN.y;
-			float s2v = body2.velocity.x * vN.x + body2.velocity.y * vN.y;
-			//float s2h = body2.vlc.x * hN.x + body2.vlc.y * hN.y;
-
-			s1v = ((mass - body2.mass)*s1v + 2 * body2.mass*s2v) / (mass + body2.mass);
-      //s1h = ((mass - body2.mass)*s2h + 2 * body2.mass*s2h) / (mass + body2.mass);
-
-			sf::Vector2f s1vVector(vN.x * s1v, vN.y * s1v);
-			sf::Vector2f s1hVector(hN.x * s1h, hN.y * s1h);
-			return sf::Vector2f(s1vVector.x + s1hVector.x, s1vVector.y + s1hVector.y);
+				sf::Vector2f newVelocity;
+				newVelocity.x = velocity.x - p * mass * vN.x;
+				newVelocity.y = velocity.y - p * mass * vN.y;
+				return newVelocity;
 		}
 
 		void Body::move() {

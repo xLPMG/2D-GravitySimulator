@@ -4,7 +4,6 @@
 class Body {
 private:
   float mass;
-  float density;
   float radius;
   bool stationary;
 
@@ -12,16 +11,15 @@ private:
   sf::CircleShape body;
   sf::Vector2f pos;
   sf::VertexArray vertices;
+  sf::Vector2f force;
 
 public:
   sf::Vector2f velocity;
   sf::Vector2f acceleration;
 
-		Body(float mass, float density, sf::Vector2f pos, sf::Vector2f velocity, bool stationary, sf::Color color);
+		Body(float mass, float radius, sf::Vector2f pos, sf::Vector2f velocity, bool stationary, sf::Color color);
 
 		float getMass();
-
-    float getDensity();
 
 		float getRadius();
 
@@ -30,6 +28,10 @@ public:
 		sf::CircleShape getBody();
 
     sf::VertexArray getTrail();
+
+    sf::Vector2f getForce();
+
+    void setForce(sf::Vector2f force);
 
 		void move();
 };

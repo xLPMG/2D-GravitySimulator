@@ -5,14 +5,9 @@
 #include "Body.h"
 #include "Physics.h"
 
-		Body::Body(float mass, float density, sf::Vector2f pos, sf::Vector2f velocity, bool stationary, sf::Color color) {
+		Body::Body(float mass, float radius, sf::Vector2f pos, sf::Vector2f velocity, bool stationary, sf::Color color) {
 			this->mass = mass;
-			this->density = density;
-			//let the body be a sphere:
-			// radius = ((3*volume) / 4*PI) ^ 1/3 ( 1/3 is approximated with 0.33333f )
-			// volume = mass / density
-			//radius * 2 scaling for better visuals
-			this->radius = pow((((3*(mass / density))) / 4*(3.14159)), 0.33333f)*2;
+			this->radius = radius;
 			this->body.setRadius(this->radius);
 			this->body.setPosition(pos.x-radius,pos.y-radius);
 			this->pos = pos;
@@ -20,16 +15,14 @@
 			this->stationary = stationary;
 			this->acceleration = sf::Vector2f(0.0f, 0.0f);
 
+			this->force = sf::Vector2f(0.0f, 0.0f);
+
 			body.setFillColor(color);
 			vertices.setPrimitiveType(sf::PrimitiveType::Points);
 		}
 
 		float Body::getMass() {
 			return this->mass;
-		}
-
-		float Body::getDensity() {
-			return this->density;
 		}
 
 		float Body::getRadius() {
@@ -46,6 +39,14 @@
 
 		sf::VertexArray Body::getTrail() {
 			return this->vertices;
+		}
+
+		sf::Vector2f Body::getForce(){
+			return this->force;
+		}
+
+		void Body::setForce(sf::Vector2f force){
+			this->force = force;
 		}
 
 		void Body::move() {

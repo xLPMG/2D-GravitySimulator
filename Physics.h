@@ -7,6 +7,6 @@ sf::Vector2f collide(Body body1, Body body2);
 
 void computeGravitationalForce(Body bodies[], int totalBodies);
 
-void handleCollisions(Body bodies[], int totalBodies, bool borderEnabled, int borderOffset, int windowWidth, int windowHeight);
+void handleCollisions(Body bodies[], int totalBodies);
 
 #endif

@@ -44,11 +44,12 @@ void computeGravitationalForce(Body bodies[], int totalBodies){
 			}
 		}
 		// F = m * a <=> a = F / m
+		bodies[i].setForce(force);
 		bodies[i].acceleration = force / bodies[i].getMass();
 	}
 }
 
-void handleCollisions(Body bodies[], int totalBodies, bool borderEnabled, int borderOffset, int windowWidth, int windowHeight){
+void handleCollisions(Body bodies[], int totalBodies){
 	sf::Vector2f* newVelocity = new sf::Vector2f[totalBodies];
 	bool* colission = new bool[totalBodies];
 
@@ -72,12 +73,6 @@ void handleCollisions(Body bodies[], int totalBodies, bool borderEnabled, int bo
 	for (int i = 0; i < totalBodies; i++) {
 		if (colission[i]) {
 			bodies[i].velocity = newVelocity[i];
-		}
-		if (borderEnabled) {
-			if (bodies[i].getPos().x - bodies[i].getRadius() < 0-borderOffset) bodies[i].velocity.x = abs(bodies[i].velocity.x);
-			else if (bodies[i].getPos().x + bodies[i].getRadius() > windowWidth+borderOffset) bodies[i].velocity.x = -abs(bodies[i].velocity.x);
-			if (bodies[i].getPos().y - bodies[i].getRadius() < 0-borderOffset)	bodies[i].velocity.y = abs(bodies[i].velocity.y);
-			else if (bodies[i].getPos().y + bodies[i].getRadius() > windowHeight+borderOffset) bodies[i].velocity.y = -abs(bodies[i].velocity.y);
 		}
 	}
 	delete[] newVelocity;

@@ -14,6 +14,13 @@ or in one command:
 
 Makefile has been tested on MacOS & Debian Linux
 
+## Usage
+- use WASD or arrow keys to navigate
+- zoom out: J
+- zoom in: K
+- add plants at the top of the main function, eg.:
+```Body b1(mass, radius, position, velocity, stationary?, Color);```
+and add the planet to ```Body bodies[1] = {b1};```
 ## Demo 
 
 <img width="862" alt="screen1" src="https://user-images.githubusercontent.com/17238289/218269724-8cc9b812-db1a-4cbc-b62f-aa723fa06c03.png">

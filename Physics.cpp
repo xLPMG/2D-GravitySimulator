@@ -36,6 +36,7 @@ void computeGravitationalForce(Body bodies[], int totalBodies){
 			float distance = sqrt(pow((bodies[i].getPos().x - bodies[j].getPos().x), 2) + pow((bodies[i].getPos().y - bodies[j].getPos().y), 2));
 
 			/*
+			formula for n-body problem:
 			- gravitational force: ( ( G * m1 * m2 ) / r^3 ) * r->
 			- r-> is the vector pointing from i to j:  (j.x – i.x, j.y – i.y)
 			*/

@@ -103,11 +103,10 @@ int main()
 		Body bodies[3] = {b1,b2,b3};
 		*/
 
-	Body b1(100.0f, 10.f, sf::Vector2f(500.f, 750.f), sf::Vector2f(0.f, 0.9f), true, sf::Color::Red);
-	Body b2(100.0f, 10.f, sf::Vector2f(900.f, 750.f), sf::Vector2f(0.0f, -0.9f), true, sf::Color::White);
-	Body b3(1000.0f, 100.f, sf::Vector2f(1100.f, 750.f), sf::Vector2f(-10.0f, -10.0f), false, sf::Color::Green);
+	Body b1(100.0f, 10.f, sf::Vector2f(500.f, 750.f), sf::Vector2f(0.f, 0.1f), false, sf::Color::Red);
+	Body b2(100.0f, 10.f, sf::Vector2f(900.f, 750.f), sf::Vector2f(0.0f, -0.9f), false, sf::Color::White);
 
-	Body bodies[3] = {b1, b2, b3};
+	Body bodies[2] = {b1, b2};
 
 	int totalBodies = sizeof(bodies) / sizeof(bodies[0]);
 
@@ -154,13 +153,6 @@ int main()
 			if (showTrails)
 			{
 				window.draw(bodies[i].getTrail());
-				float x = bodies[i].getPos().x + (bodies[i].getForce().x * 10);
-				float y = bodies[i].getPos().y + (bodies[i].getForce().y * 10);
-				sf::Vertex line[] =
-					{
-						sf::Vertex(bodies[i].getPos(), sf::Color::Red),
-						sf::Vertex(sf::Vector2f(x, y), sf::Color::Red)};
-				window.draw(line, 2, sf::Lines);
 			}
 		}
 		currentTime = clock.getElapsedTime();

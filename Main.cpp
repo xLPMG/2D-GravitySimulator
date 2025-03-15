@@ -39,15 +39,15 @@ int main()
 	Body bodies[2] = {b1, b2};
 	int totalBodies = sizeof(bodies) / sizeof(bodies[0]);
 
-	sf::RenderWindow window(sf::VideoMode(1500, 1500), "C++ Gravity Simulator");
+	sf::RenderWindow window(sf::VideoMode({1500, 1500}), "C++ Gravity Simulator");
 	window.setFramerateLimit(144);
 	float fps;
 	sf::Clock clock;
 	sf::Time previousTime = clock.getElapsedTime();
 	sf::Time currentTime;
-	sf::Text FPS;
 	sf::Font font;
-	font.loadFromFile("Roboto-Regular.ttf");
+	font.openFromFile("Roboto-Regular.ttf");
+	sf::Text FPS(font);
 	FPS.setFont(font);
 	FPS.setFillColor(sf::Color::White);
 	FPS.setStyle(sf::Text::Bold);
